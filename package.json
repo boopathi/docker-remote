@@ -3,7 +3,7 @@
   "version": "v0.0.1",
   "description": "A web app to control your dockerio containers",
   "scripts": {
-    "start": "node server.js",
+    "start": "node index.js",
     "test": "mocha"
   },
   "dependencies": {

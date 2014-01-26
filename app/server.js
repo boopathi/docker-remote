@@ -1,3 +1,5 @@
+"use strict";
+
 var connect = require("express/node_modules/connect"),
     express = require("express"),
     cookie = require("cookie"),
@@ -21,7 +23,7 @@ app.use(express.bodyParser());
 app.use(express.methodOverride());
 app.use(express.cookieParser(config[env].SECRET));
 app.use(express.session({
-  secret: SECRET,
+  secret: config[env].SECRET,
   store: store,
   key: 'docker-remote',
 }));
@@ -33,7 +35,7 @@ if('development' === env) {
 }
 
 //App routes
-app.get('/', routes.index);
+app.get('/', routes.dashboard);
 app.get('/images', routes.images);
 app.get('/containers', routes.containers);
 app.get('/image/:imageid', routes.imageinfo);

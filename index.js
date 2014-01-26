@@ -1,7 +1,10 @@
+"use strict";
 var server = require("./app"),
     config = require("./config"),
-    env = app.get('env');
+    env = process.env.NODE_ENV,
+    ip = config[env].server.host,
+    port = config[env].server.port;
 
-server.listen(config[env].port, config[env].host, function() {
-  console.log("Docker-Remote Server listening on port ", config[env].port);
+server.listen(port, ip, function() {
+  console.log("Docker-Remote Server listening on port ", port);
 });
