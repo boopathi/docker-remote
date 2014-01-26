@@ -11,4 +11,4 @@ module.exports = {
   images: images.index,
   imageinfo: images.imageinfo,
   containerinfo: containers.containerinfo
-}
+};

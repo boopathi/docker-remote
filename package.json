@@ -10,10 +10,15 @@
     "express": "~3.4.8",
     "socket.io": "~0.9.16",
     "cookie": "~0.1.0",
-    "ejs": "~0.8.5"
+    "ejs": "~0.8.5",
+    "underscore": "~1.5.2"
   },
   "devDependencies": {
-    "grunt": "~0.4.2"
+    "grunt": "~0.4.2",
+    "underscore": "~1.5.2",
+    "grunt-express-server": "~0.4.11",
+    "grunt-contrib-watch": "~0.5.3",
+    "grunt-contrib-jshint": "~0.8.0"
   },
   "license": "MIT",
   "homepage": "https://github.com/boopathi/docker-remote",
