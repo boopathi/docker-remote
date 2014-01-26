@@ -21,6 +21,8 @@
     "tests"
   ],
   "dependencies": {
-    "angularjs": "*"
+    "angularjs": "*",
+    "jquery": "2.1.0",
+    "bootstrap": "3.0.3"
   }
 }
