@@ -1,5 +1,5 @@
 var q = require("q"),
-    docker = require("docker");
+    docker = require("./docker");
 
 var errorPage = function(res) {
   return function(err) {
