@@ -1,7 +1,7 @@
 "use strict";
 var server = require("./app"),
     config = require("./config"),
-    env = process.env.NODE_ENV,
+    env = process.env.NODE_ENV || "development",
     ip = config[env].server.host,
     port = config[env].server.port;
 
