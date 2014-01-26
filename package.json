@@ -1,0 +1,23 @@
+{
+  "name": "docker-remote",
+  "version": "v0.0.1",
+  "description": "A web app to control your dockerio containers",
+  "scripts": {
+    "start": "node server.js",
+    "test": "mocha"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "grunt": "~0.4.2"
+  },
+  "homepage": "https://github.com/boopathi/docker-remote",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/boopathi/docker-remote"
+  },
+  "author": {
+    "name": "Boopathi Rajaa",
+    "email": "me@boopathi.in",
+    "url": "http://boopathi.in"
+  }
+}

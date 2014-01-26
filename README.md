@@ -1,4 +1,3 @@
-docker-remote
-=============
+# docker-remote
 
 A webapp for managing docker containers
