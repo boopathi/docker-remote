@@ -3,8 +3,7 @@
   "version": "v0.0.1",
   "description": "A web app to control your dockerio containers",
   "scripts": {
-    "start": "node index.js",
-    "build": "grunt build",
+    "start": "grunt build; node index.js",
     "test": "mocha"
   },
   "dependencies": {
