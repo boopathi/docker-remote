@@ -12,7 +12,8 @@ config = {
     server: {
       host: "0.0.0.0",
       port: "4205"
-    }
+    },
+    SECRET: "SOMERANDOMSECRET"
   },
   production: {
     debut: false,
@@ -23,7 +24,8 @@ config = {
     server: {
       host: "0.0.0.0",
       port: process.env.PORT
-    }
+    },
+    SECRET: process.env.SECRET
   }
 };
 
