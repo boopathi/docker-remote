@@ -33,4 +33,4 @@ npm-debug.log
 build
 .npm-debug
 node_modules
-
+bower_components

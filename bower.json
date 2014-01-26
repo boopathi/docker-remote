@@ -1,0 +1,26 @@
+{
+  "name": "docker-remote",
+  "version": "0.0.1",
+  "authors": [
+    "Boopathi Rajaa <me@boopathi.in>"
+  ],
+  "description": "A webapp to control docker containers",
+  "main": "server.js",
+  "keywords": [
+    "docker",
+    "remote",
+    "lxc-docker"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/boopathi/docker-remote",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angularjs": "*"
+  }
+}
