@@ -1,4 +1,5 @@
-"use strict";
-function controllers(){
-
-}
+(function() {
+  "use strict";
+  function controllers(){
+  }
+})();

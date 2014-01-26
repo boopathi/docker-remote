@@ -52,6 +52,50 @@ gruntConfig.push({
   }
 });
 
+//grunt-contrib-concat
+gruntConfig.push({
+  concat: {
+    css: {
+      src: ['app/public/css/*.css'],
+      dest: 'app/public/build/docker-remote.css'
+    },
+    js: {
+      src: ['app/assets/jquery/jquery.js',
+            'app/assets/angular/angular.js',
+            'app/assets/bootstrap/dist/js/bootstrap.js',
+            'app/public/js/controllers.js'],
+      dest: 'app/public/build/docker-remote.js'
+    }
+  }
+})
+
+//grunt-config-cssmin
+gruntConfig.push({
+  cssmin: {
+    css: {
+      src: ['<%= concat.css.dest %>'],
+      dest: 'app/public/build/docker-remote.min.css'
+    }
+  }
+});
+
+
+//grunt-contrib-uglify
+gruntConfig.push({
+  uglify: {
+    js: {
+      options: {
+        compress: true,
+        report: 'gzip',
+        mangle: false
+      },
+      files: {
+        "app/public/build/docker-remote.min.js": ['<%= concat.js.dest %>']
+      }
+    }
+  }
+});
+
 //grunt-contrib-watch
 gruntConfig.push({
   watch: {
@@ -68,13 +112,15 @@ module.exports = function(grunt) {
   }], gruntConfig)));
   
   // Load tasks
+  grunt.loadNpmTasks('grunt-contrib-concat');
+  grunt.loadNpmTasks('grunt-contrib-cssmin');
+  grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-express-server');
 
   // RegisterTasks
-  grunt.registerTask('lint', ['jshint']);
-  grunt.registerTask('server', ['express:dev']);
+  grunt.registerTask('build', ['jshint','concat', 'cssmin', 'uglify']);
+  grunt.registerTask('server', ['build', 'express:dev']);
   grunt.registerTask('default', []);
 };
-
