@@ -27,7 +27,7 @@ app.use(express.session({
   store: store,
   key: 'docker-remote',
 }));
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'public', 'build')));
 
 
 if('development' === env) {
@@ -48,5 +48,8 @@ var server = http.createServer(app),
 //TODO: configure io in a separate file websockets.js
 
 app.use(app.router);
+
+//For 404
+app.use(routes.error404);
 
 module.exports = server;

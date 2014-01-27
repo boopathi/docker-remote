@@ -52,19 +52,34 @@ gruntConfig.push({
   }
 });
 
+//grunt-contrib-copy
+//Copy only files other than css and JS. CSS and JS will be minified.
+gruntConfig.push({
+  copy: {
+    main: {
+      files: [
+        { expand: true, cwd: 'assets/bootstrap/dist/fonts', src: ['*'], dest: 'app/public/build/fonts', filter: 'isFile' },
+        { expand: true, cwd: 'app/public/images', src: ['*.png', '*.jpg', '*.gif'], dest: 'app/public/build/images', filter: 'isFile' },
+        { expand: true, cwd: 'app/public', src: ['*'], dest: 'app/public/build', filter: 'isFile' },
+      ]
+    }
+  }
+});
+
 //grunt-contrib-concat
 gruntConfig.push({
   concat: {
     css: {
-      src: ['app/public/css/*.css'],
-      dest: 'app/public/build/docker-remote.css'
+      src: ['assets/bootstrap/dist/css/bootstrap.css',
+            'app/public/css/*.css'],
+      dest: 'app/public/build/css/docker-remote.css'
     },
     js: {
-      src: ['app/assets/jquery/jquery.js',
-            'app/assets/angular/angular.js',
-            'app/assets/bootstrap/dist/js/bootstrap.js',
+      src: ['assets/jquery/jquery.js',
+            'assets/angular/angular.js',
+            'assets/bootstrap/dist/js/bootstrap.js',
             'app/public/js/controllers.js'],
-      dest: 'app/public/build/docker-remote.js'
+      dest: 'app/public/build/js/docker-remote.js'
     }
   }
 })
@@ -74,7 +89,7 @@ gruntConfig.push({
   cssmin: {
     css: {
       src: ['<%= concat.css.dest %>'],
-      dest: 'app/public/build/docker-remote.min.css'
+      dest: 'app/public/build/css/docker-remote.min.css'
     }
   }
 });
@@ -86,11 +101,10 @@ gruntConfig.push({
     js: {
       options: {
         compress: true,
-        report: 'gzip',
         mangle: false
       },
       files: {
-        "app/public/build/docker-remote.min.js": ['<%= concat.js.dest %>']
+        "app/public/build/js/docker-remote.min.js": ['<%= concat.js.dest %>']
       }
     }
   }
@@ -112,6 +126,7 @@ module.exports = function(grunt) {
   }], gruntConfig)));
   
   // Load tasks
+  grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-cssmin');
   grunt.loadNpmTasks('grunt-contrib-uglify');
@@ -120,7 +135,8 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-express-server');
 
   // RegisterTasks
-  grunt.registerTask('build', ['jshint','concat', 'cssmin', 'uglify']);
-  grunt.registerTask('server', ['build', 'express:dev']);
+  grunt.registerTask('build', ['copy', 'jshint','concat', 'cssmin', 'uglify']);
+  grunt.registerTask('serve', ['express:dev']);
+  grunt.registerTask('start', ['build', 'serve']);
   grunt.registerTask('default', []);
 };

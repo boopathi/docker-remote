@@ -9,12 +9,32 @@ var errorPage = function(res) {
   };
 };
 
+function error404(req, res, next) {
+  res.status(404);
+  if(req.accepts('html')) {
+    res.render('page', {
+      title: 'Page not Found',
+      page: '404',
+    });
+    return;
+  }
+  if(req.accepts('json')) {
+    res.send({error: "Not Found"});
+    return;
+  }
+  res.type('text').send('Not Found');
+}
+
 function dashboard(req, res) {
   promise = docker.getImages();
   promise.then(function(data,resp) {
-    res.render('dashboard', {
-      title: 'docker-remote | dashboard',
-      data: data
+    images = JSON.parse(data);
+    res.render('page', {
+      title: 'Dashboard',
+      page: 'dashboard',
+      data: {
+        images: images.length
+      }
     });
   }, errorPage(res));
 }
@@ -26,5 +46,6 @@ module.exports = {
   containers: anon,
   images: anon,
   containerinfo: anon,
-  imageinfo: anon
+  imageinfo: anon,
+  error404: error404
 };

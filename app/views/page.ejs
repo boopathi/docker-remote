@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html ng-app="dockerRemote">
+  <head>
+    <%- include head.ejs %>
+  </head>
+  <body>
+    <div class="container dr-container">
+      <div class="row">
+        <div class="col-xs-4 col-md-2" id="sidebar">
+          <%- include sidebar.ejs %>
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-10">
+          <header>
+          <%- include header.ejs %>
+          </header>
+          <% if(page=="dashboard"){ %>
+            <%- include dashboard %>
+          <% } else if(page == "containers"){ %>
+            <%- include containers %>
+          <% } else if(page == "images"){ %>
+            <%- include images %>
+          <% } else if(page == "containerinfo"){ %>
+            <%- include containerinfo %>  
+          <% } else if(page == "imageinfo"){ %>
+            <%- include imageinfo %>
+          <% } else { %>
+            <%- include 404 %>
+          <% } %>
+        </div>
+      </div>
+    </div>
+    <footer>
+    <%- include footer.ejs %>
+    </footer>
+    <script src="js/docker-remote.min.js"></script>
+  </body>
+</html>

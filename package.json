@@ -3,7 +3,8 @@
   "version": "v0.0.1",
   "description": "A web app to control your dockerio containers",
   "scripts": {
-    "start": "grunt build; node index.js",
+    "start": "node index.js",
+    "postinstall": "grunt build",
     "test": "mocha"
   },
   "dependencies": {
@@ -23,7 +24,8 @@
     "grunt-contrib-jshint": "~0.8.0",
     "grunt-contrib-uglify": "~0.3.2",
     "grunt-contrib-concat": "~0.3.0",
-    "grunt-contrib-cssmin": "~0.7.0"
+    "grunt-contrib-cssmin": "~0.7.0",
+    "grunt-contrib-copy": "~0.5.0"
   },
   "license": "MIT",
   "homepage": "https://github.com/boopathi/docker-remote",
