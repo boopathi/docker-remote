@@ -1,1 +1,15 @@
-<%= JSON.stringify(data) %>
+<table class="table" ng-controller="Dashboard">
+  <thead></thead>
+  <tbody>
+    <tr ng-repeat="(key,value) in info">
+      <th>{{key}}</th><td>{{value}}</td>
+    </tr>
+    <tr ng-repeat="(key,value) in version">
+      <th>{{key}}</th><td>{{value}}</td>
+    </tr>
+  </tbody>
+</table>
+<script>
+var DATA=<%- JSON.stringify(data) %>;
+</script>
+

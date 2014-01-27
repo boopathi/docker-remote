@@ -11,6 +11,11 @@ docker.filter('bytes', function() {
   };
 });
 
+docker.controller('Dashboard', function($scope) {
+  $scope.info = DATA.info;
+  $scope.version = DATA.version;
+});
+
 docker.controller('ContainersList', function($scope) {
   $scope.TDSIZE = 10;
   $scope.containers = DATA.containers;

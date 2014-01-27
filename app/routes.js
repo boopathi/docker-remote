@@ -1,4 +1,5 @@
-var q = require("q"),
+var Q = require("q"),
+    _ = require("underscore"),
     docker = require("./docker");
 
 var errorPage = function(res) {
@@ -30,17 +31,19 @@ function error404(req, res, next) {
 }
 
 function dashboard(req, res) {
-  promise = docker.getImages();
-  promise.then(function(data) {
-    images = JSON.parse(data);
+  promises = [docker.getInfo(),
+           docker.getVersion()];
+  Q.all(promises).spread(function(info, version) {
+    data = {
+      info: JSON.parse(info),
+      version: JSON.parse(version)
+    };
     res.render('page', {
       title: 'Dashboard',
       page: 'dashboard',
-      data: {
-        images: images.length
-      }
+      data: data
     });
-  }, errorPage(res));
+  }, errorPage(res)).done();
 }
 
 function containers(req,res) {

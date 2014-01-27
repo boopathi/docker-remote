@@ -22,6 +22,9 @@ docker.errors = {
   containerinfo: {
     "404": "Container Not Found",
     "500": "Internal Server Error"
+  },
+  all: {
+    "500": "Internal Server Error"
   }
 };
 
@@ -54,6 +57,16 @@ var getter = function(opts, from) {
     return q.promise;
   };
 };
+
+docker.getInfo = getter({
+  path: "/info",
+  method: "GET",
+}, "all");
+
+docker.getVersion = getter({
+  path: "/version",
+  method: "GET"
+}, 'all');
 
 //Container related stuff
 docker.getContainers = getter({

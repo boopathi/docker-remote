@@ -17,6 +17,46 @@
           </table>
         </td>
       </tr>
+      <tr>
+        <th>State</th>
+        <td>
+          <table class="table table-condensed">
+            <tbody>
+              <tr ng-repeat="(key,value) in cont.State">
+                <td>{{key}}</td><td>{{value}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <th>Network Settings</th>
+        <td>
+          <table class="table table-condensed">
+            <tbody>
+              <tr ng-repeat="(key,value) in cont.NetworkSettings">
+                <td>{{key}}</td><td>{{value}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+      </tr>
+      <tr><th>SysInitPath</th><td>{{cont.SysInitPath}}</td></tr>
+      <tr><th>ResolvConfPath</th><td>{{cont.ResolvConfPath}}</td></tr>
+      <tr><th>Volumes</th><td>{{cont.Volumes}}</td></tr>
+      <tr>
+        <th>Host Config</th>
+        <td>
+          <table class="table table-condensed">
+            <tbody>
+              <tr ng-repeat="(key,value) in cont.HostConfig">
+                <td>{{key}}</td><td>{{value}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+      </tr>
+
     </tbody>
   </table>
 </div>
