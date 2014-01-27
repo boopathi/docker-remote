@@ -11,11 +11,17 @@ gruntConfig.push({
     //Defining it here so that others can use it in the name of express
     files: ['index.js', 'config.js', 'app/*.js', 'app/routes/*.js'],
     options: {
-      script: "index.js",
-      output: "Docker-Remote is running"
+      script: "index.js"
     },
     dev: {
       options: {
+        script: "index.js"
+      }
+    },
+    prod: {
+      options: {
+        script: "index.js",
+        node_env: "production"
       }
     },
     test: {
@@ -114,13 +120,12 @@ gruntConfig.push({
 gruntConfig.push({
   watch: {
     jshint: {
-      files: ['<%= jshint.files %>', '<%= express.files %>'],
+      files: ['<%= jshint.files %>'],
       tasks: ['jshint', 'build'],
-      options: { livereload: true }
     },
     express: {
-      files: ['index.js', 'config.js', 'app/*.js', 'app/routes/*.js'],
-      tasks: ['express:dev'],
+      files: ['<%= express.files %>'],
+      tasks: ['jshint:express', 'express:dev'],
       options: { spawn: false }
     }
   }

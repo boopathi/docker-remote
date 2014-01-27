@@ -36,7 +36,7 @@ var getter = function(opts, from) {
   return function() {
     var q = Q.defer();
     var req = http.request(_.extend(options,opts), function(res) {
-      if(res.statusCode == 200) {
+      if(res.statusCode >= 200 && res.statusCode < 210) {
         res.on('data', function(data) {
           q.resolve(data,res);
         });
