@@ -1,1 +1,21 @@
-Containers
+<table ng-controller="ContainersList" class="table table-hover table-condensed">
+  <thead>
+    <tr>
+      <th>Container Id</th>
+      <th>Image</th>
+      <th>Command</th>
+      <th>Created Timestamp</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-repeat="cont in containers">
+      <td>{{cont.Id.substring(0,14)}}</td>
+      <td>{{cont.Image}}</td>
+      <td>{{cont.Command}}</td>
+      <td>{{cont.Created | date:'medium'}}</td>
+    </tr>
+  </tbody>
+</table>
+<script>
+var DATA=<%- JSON.stringify(data) %>;
+</script>

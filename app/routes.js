@@ -31,7 +31,7 @@ function error404(req, res, next) {
 
 function dashboard(req, res) {
   promise = docker.getImages();
-  promise.then(function(data,resp) {
+  promise.then(function(data) {
     images = JSON.parse(data);
     res.render('page', {
       title: 'Dashboard',
@@ -43,12 +43,40 @@ function dashboard(req, res) {
   }, errorPage(res));
 }
 
+function containers(req,res) {
+  promise = docker.getContainers();
+  promise.then(function(data) {
+    c = JSON.parse(data);
+    res.render('page', {
+      title: 'Containers',
+      page: 'containers',
+      data: {
+        containers: c
+      }
+    });
+  }, errorPage(res));
+}
+
+function images(req,res) {
+  promise = docker.getImages();
+  promise.then(function(data) {
+    i = JSON.parse(data);
+    res.render('page', {
+      title: 'Images',
+      page: 'images',
+      data: {
+        images: i
+      }
+    });
+  }, errorPage(res));
+}
+
 function anon(){}
 
 module.exports = {
   dashboard: dashboard,
-  containers: anon,
-  images: anon,
+  containers: containers,
+  images: images,
   containerinfo: anon,
   imageinfo: anon,
   error404: error404

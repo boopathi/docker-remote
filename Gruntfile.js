@@ -59,7 +59,7 @@ gruntConfig.push({
     main: {
       files: [
         { expand: true, cwd: 'assets/bootstrap/dist/fonts', src: ['*'], dest: 'app/public/build/fonts', filter: 'isFile' },
-        { expand: true, cwd: 'app/public/images', src: ['*.png', '*.jpg', '*.gif'], dest: 'app/public/build/images', filter: 'isFile' },
+        { expand: true, cwd: 'app/public/img', src: ['*.png', '*.jpg', '*.gif'], dest: 'app/public/build/img', filter: 'isFile' },
         { expand: true, cwd: 'app/public', src: ['*'], dest: 'app/public/build', filter: 'isFile' },
       ]
     }
@@ -115,7 +115,13 @@ gruntConfig.push({
   watch: {
     jshint: {
       files: ['<%= jshint.files %>', '<%= express.files %>'],
-      tasks: ['jshint']
+      tasks: ['jshint', 'build'],
+      options: { livereload: true }
+    },
+    express: {
+      files: ['index.js', 'config.js', 'app/*.js', 'app/routes/*.js'],
+      tasks: ['express:dev'],
+      options: { spawn: false }
     }
   }
 });
@@ -136,7 +142,7 @@ module.exports = function(grunt) {
 
   // RegisterTasks
   grunt.registerTask('build', ['copy', 'jshint','concat', 'cssmin', 'uglify']);
-  grunt.registerTask('serve', ['express:dev']);
+  grunt.registerTask('serve', ['express:dev', 'watch']);
   grunt.registerTask('start', ['build', 'serve']);
   grunt.registerTask('default', []);
 };
