@@ -5,10 +5,10 @@ var errorPage = function(res) {
   return function(err) {
     res.status(500);
     res.render('page', {
-      title: 'Unable to connect Docker',
+      title: 'Error!',
       page: '500',
-      reason: "Unable to connect Docker",
-      description: err,
+      reason: err.statusCode,
+      description: err.desc,
     });
   };
 };
@@ -57,6 +57,19 @@ function containers(req,res) {
   }, errorPage(res));
 }
 
+function containerinfo(req,res) {
+  cid = req.params.containerid;
+  promise = docker.getContainerInfo(cid);
+  promise.then(function(data) {
+    c = JSON.parse(data);
+    res.render('page', {
+      title: 'Container ' + cid,
+      page: 'containerinfo',
+      data: c
+    });
+  }, errorPage(res));
+}
+
 function images(req,res) {
   promise = docker.getImages();
   promise.then(function(data) {
@@ -71,13 +84,24 @@ function images(req,res) {
   }, errorPage(res));
 }
 
-function anon(){}
+function imageinfo(req,res) {
+  iid = req.params.imageid;
+  promise = docker.getImageInfo(iid);
+  promise.then(function(data) {
+    i = JSON.parse(data);
+    res.render('page', {
+      title: 'Image: ' + iid,
+      page: 'imageinfo',
+      data: i
+    });
+  }, errorPage(res));
+}
 
 module.exports = {
   dashboard: dashboard,
   containers: containers,
   images: images,
-  containerinfo: anon,
-  imageinfo: anon,
+  containerinfo: containerinfo,
+  imageinfo: imageinfo,
   error404: error404
 };

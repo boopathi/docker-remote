@@ -14,7 +14,18 @@ var options = {
 
 var docker = {};
 
-var getter = function(opts) {
+docker.errors = {
+  imageinfo: {
+    "404": "Image Not Found",
+    "500": "Internal Server Error"
+  },
+  containerinfo: {
+    "404": "Container Not Found",
+    "500": "Internal Server Error"
+  }
+};
+
+var getter = function(opts, from) {
   var options = {
     host: config[env].docker.host,
     port: config[env].docker.port
@@ -22,12 +33,22 @@ var getter = function(opts) {
   return function() {
     var q = Q.defer();
     var req = http.request(_.extend(options,opts), function(res) {
-      res.on('data', function(data) {
-        q.resolve(data,res);
-      });
+      if(res.statusCode == 200) {
+        res.on('data', function(data) {
+          q.resolve(data,res);
+        });
+      } else {
+        q.reject({
+          statusCode: res.statusCode,
+          desc: docker.errors[from][res.statusCode.toString()]
+        });
+      }
     });
     req.on('error', function(err) {
-      q.reject(err);
+      q.reject({
+        statusCode: 500,
+        desc: err,
+      });
     });
     req.end();
     return q.promise;
@@ -38,12 +59,26 @@ var getter = function(opts) {
 docker.getContainers = getter({
   path: "/containers/json",
   method: "GET"
-});
+}, "containers");
+
+docker.getContainerInfo = function(cont) {
+  return getter({
+    path: "/containers/" + cont + "/json",
+    method: "GET"
+  }, "containerinfo")();
+};
 
 //Images related stuff
 docker.getImages = getter({
   path: "/images/json",
   method: "GET"
-});
+}, "images");
+
+docker.getImageInfo = function(img) {
+  return getter({
+    path: "/images/" + img + "/json",
+    mtethod: "GET"
+  }, "imageinfo")();
+};
 
 module.exports = docker;

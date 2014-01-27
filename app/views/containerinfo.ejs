@@ -1,0 +1,25 @@
+<div ng-controller="ContainerInfo">
+  <table class="table">
+    <tbody>
+      <tr><th>Id</th><td>{{cont.ID}}</td></tr>
+      <tr><th>Created</th><td>{{cont.Created | date:'medium'}}</td></tr>
+      <tr><th>Path</th><td>{{cont.Path}}</td></tr>
+      <tr><th>Image</th><td><a href="/image/{{cont.Image}}">{{cont.Image}}</a></td></tr>
+      <tr>
+        <th>Config</th>
+        <td>
+          <table class="table table-condensed">
+            <tbody>
+              <tr ng-repeat="(key,value) in cont.Config">
+                <td>{{key}}</td><td>{{value}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<script>
+var DATA=<%- JSON.stringify(data) %>;
+</script>

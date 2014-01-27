@@ -1,0 +1,32 @@
+<div ng-controller="ImageInfo">
+  <table class="table">
+    <tbody>
+      <tr><th>Id</th><td>{{image.id}}</td></tr>
+      <tr><th>Parent</th><td><a href="/image/{{image.parent}}">{{image.parent}}</a></td></tr>
+      <tr><th>Created</th><td>{{image.created | date:'medium'}}</td></tr>
+      <tr><th>Size</th><td>{{image.Size | bytes}}</td></tr>
+      <tr><th>Container</th><td><a href="/container/{{image.container}}">{{image.container}}</a></td></tr>
+      <tr>
+        <th>Container Config</th>
+        <td>
+          <table class="table table-condensed">
+            <thead><th>Property</th><th>Value</th></thead>
+            <tbody>
+              <tr ng-repeat="(key,value) in image.container_config">
+                <td>{{key}}</td><td>{{value}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+      </tr>
+      <!--
+      <tr ng-repeat="(key,value) in image">
+        <th>{{key}}</th><td>{{value}}</td>
+      </tr>
+      -->
+    </tbody>
+  </table>
+</div>
+<script>
+var DATA=<%- JSON.stringify(data) %>;
+</script>

@@ -11,14 +11,14 @@
   </thead>
   <tbody>
     <tr ng-repeat="img in images">
-      <td>{{img.Id.substring(0,TDSIZE)}}</td>
+      <td><a href="/image/{{img.Id}}">{{img.Id.substring(0,TDSIZE)}}</a></td>
       <td>
         <div ng-repeat="tag in img.RepoTags">{{tag}}</div>
       </td>
-      <td>{{img.Created | date:'medium'}}</td>
-      <td>{{img.Size}}</td>
-      <td>{{img.VirtualSize}}</td>
-      <td>{{img.ParentId.substring(0,TDSIZE)}}</td>
+      <td>{{img.Created * 1000 | date:'medium'}}</td>
+      <td>{{img.Size | bytes}}</td>
+      <td>{{img.VirtualSize | bytes}}</td>
+      <td><a href="/image/{{img.ParentId}}">{{img.ParentId.substring(0,TDSIZE)}}</a></td>
     </tr>
   </tbody>
 </table>
