@@ -3,8 +3,12 @@ var q = require("q"),
 
 var errorPage = function(res) {
   return function(err) {
-    res.render('error', {
-      reason: err
+    res.status(500);
+    res.render('page', {
+      title: 'Unable to connect Docker',
+      page: '500',
+      reason: "Unable to connect Docker",
+      description: err,
     });
   };
 };
