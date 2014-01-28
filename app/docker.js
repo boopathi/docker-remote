@@ -103,7 +103,7 @@ docker.deleteImage = function(img) {
   return getter({
     path: "/images/" + img,
     method: "DELETE"
-  }, 'deleteimage');
+  }, 'deleteimage')();
 };
 
 module.exports = docker;

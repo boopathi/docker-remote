@@ -39,6 +39,7 @@ app.get('/', routes.dashboard);
 app.get('/images', routes.images);
 app.get('/containers', routes.containers);
 app.get('/image/:imageid', routes.imageinfo);
+app.del('/image/:imageid', routes.deleteimage);
 app.get('/container/:containerid', routes.containerinfo);
 
 var server = http.createServer(app),

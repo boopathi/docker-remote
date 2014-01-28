@@ -100,11 +100,24 @@ function imageinfo(req,res) {
   }, errorPage(res));
 }
 
+function deleteimage(req,res) {
+  iid = req.params.imageid;
+  promise = docker.deleteImage(iid);
+  promise.then(function(data) {
+    i = JSON.parse(data);
+    res.send(i);
+  }, function(err) {
+    res.status(500);
+    res.send(err);
+  });
+}
+
 module.exports = {
   dashboard: dashboard,
   containers: containers,
   images: images,
   containerinfo: containerinfo,
   imageinfo: imageinfo,
+  deleteimage: deleteimage,
   error404: error404
 };

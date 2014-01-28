@@ -11,6 +11,20 @@ docker.filter('bytes', function() {
   };
 });
 
+docker.directive('scroll', function($window) {
+  return function(scope, element, attrs) {
+    angular.element($window).bind('scroll', function() {
+      var nav = $("#dr-static-navbar").parent();
+      if(this.pageYOffset >= nav.offset().top) {
+        scope.boolNavbarScroll = true;
+      } else {
+        scope.boolNavbarScroll = false;
+      }
+      scope.$apply();
+    });
+  };
+});
+
 Controllers = {};
 
 Controllers.Dashboard = function($scope) {
@@ -27,11 +41,26 @@ Controllers.ContainerInfo = function($scope) {
   $scope.cont = DATA;
 };
 
-Controllers.ImagesList = function($scope) {
+Controllers.ImagesList = function($scope, $http) {
   $scope.TDSIZE = 16;
   $scope.images = DATA.images;
+  angular.forEach($scope.images, function(e) {
+    e.initloading = false;
+    e.rmloading = false;
+  });
+  $scope.loading = false;
   $scope.deleteImage = function(img) {
-    $scope.images.splice($scope.images.indexOf(img), 1);
+    img.rmloading = true;
+    $http({
+      method: "DELETE",
+      url: "/image/" + img.Id
+    }).success(function(data) {
+      $scope.images.splice($scope.images.indexOf(img), 1); 
+      img.rmloading = false;
+    }).error(function(data) {
+      console.log("error : ", data);
+      img.rmloading = false;
+    });
   };
 };
 
