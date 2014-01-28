@@ -1,27 +1,34 @@
-<table ng-controller="ImagesList" class="table table-hover table-condensed">
-  <thead>
-    <tr>
-      <th>Image Id</th>
-      <th>Tags</th>
-      <th>Created</th>
-      <th>Size</th>
-      <th>Virtual Size</th>
-      <th>Parent</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr ng-repeat="img in images">
-      <td><a href="/image/{{img.Id}}">{{img.Id.substring(0,TDSIZE)}}</a></td>
-      <td>
-        <div ng-repeat="tag in img.RepoTags">{{tag}}</div>
-      </td>
-      <td>{{img.Created * 1000 | date:'medium'}}</td>
-      <td>{{img.Size | bytes}}</td>
-      <td>{{img.VirtualSize | bytes}}</td>
-      <td><a href="/image/{{img.ParentId}}">{{img.ParentId.substring(0,TDSIZE)}}</a></td>
-    </tr>
-  </tbody>
-</table>
+<div ng-controller="ImagesList" class="ImagesList">
+  <nav class="navbar navbar-default">
+    <div class="navbar-header">
+      <a class="navbar-brand">Search</a>
+    </div>
+    <div class="collapsible navbar-collapse">
+      <form class="navbar-form navbar-left" role="search">
+        <input type="text" class="form-control" ng-model="imageQuery" size="55" placeholder="ubuntu:12.04" />
+      </form>
+      <form class="navbar-form navbar-left" role="Create Image">
+        <button class="btn btn-success"><span class="glyphicon glyphicon-plus"></span> Create</button>
+      </form>
+    </div>
+  </nav>
+  <div class="well" ng-repeat="img in images | filter:imageQuery | orderBy:'Id'">
+    <div class="row">
+      <div class="col-xs-8 col-sm-10 col-md-10">
+        <h4><a href="/image/{{img.Id}}">{{img.RepoTags[img.RepoTags.length-1]}}</a></h4>
+        <div class="small">Created on {{img.Created * 1000 | date:'medium'}} </div>
+        <div class="small">ID = {{img.Id.substring(0,TDSIZE)}}</div>
+      </div>
+      <div class="col-xs-4 col-sm-2 options">
+        <form>
+          <input type="hidden" name="imageid" value="{{img.Id}}"/>
+          <button class="btn btn-default" title="Start a new container with this image"><span class="glyphicon glyphicon-flash"></span></button>
+          <button class="btn btn-danger" ng-click="deleteImage(img)" title="Remove image"><span class="glyphicon glyphicon-remove"></span></button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
 <script>
 var DATA=<%- JSON.stringify(data) %>;
 </script>

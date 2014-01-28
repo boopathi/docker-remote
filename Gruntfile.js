@@ -121,12 +121,16 @@ gruntConfig.push({
   watch: {
     jshint: {
       files: ['<%= jshint.files %>'],
-      tasks: ['jshint', 'build'],
+      tasks: ['build:js'],
     },
     express: {
       files: ['<%= express.files %>'],
       tasks: ['jshint:express', 'express:dev'],
       options: { spawn: false }
+    },
+    cssmin: {
+      files: ['app/public/css/*.css'],
+      tasks: ['build:css']
     }
   }
 });
@@ -146,7 +150,10 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-express-server');
 
   // RegisterTasks
-  grunt.registerTask('build', ['copy', 'jshint','concat', 'cssmin', 'uglify']);
+  grunt.registerTask('build:css', ['concat:css','cssmin:css']);
+  grunt.registerTask('build:js', ['jshint','concat:js','uglify:js']);
+  grunt.registerTask('build:copy', ['copy']);
+  grunt.registerTask('build', ['build:css','build:js','build:copy']);
   grunt.registerTask('serve', ['express:dev', 'watch']);
   grunt.registerTask('start', ['build', 'serve']);
   grunt.registerTask('default', []);

@@ -19,6 +19,11 @@ docker.errors = {
     "404": "Image Not Found",
     "500": "Internal Server Error"
   },
+  deleteimage: {
+    "404": "No such Image",
+    "409": "Conflict",
+    "500": "Internal Server Error"
+  },
   containerinfo: {
     "404": "Container Not Found",
     "500": "Internal Server Error"
@@ -90,8 +95,15 @@ docker.getImages = getter({
 docker.getImageInfo = function(img) {
   return getter({
     path: "/images/" + img + "/json",
-    mtethod: "GET"
+    method: "GET"
   }, "imageinfo")();
+};
+
+docker.deleteImage = function(img) {
+  return getter({
+    path: "/images/" + img,
+    method: "DELETE"
+  }, 'deleteimage');
 };
 
 module.exports = docker;

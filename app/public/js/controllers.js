@@ -11,25 +11,36 @@ docker.filter('bytes', function() {
   };
 });
 
-docker.controller('Dashboard', function($scope) {
+Controllers = {};
+
+Controllers.Dashboard = function($scope) {
   $scope.info = DATA.info;
   $scope.version = DATA.version;
-});
+};
 
-docker.controller('ContainersList', function($scope) {
+Controllers.ContainersList = function($scope) {
   $scope.TDSIZE = 10;
   $scope.containers = DATA.containers;
-});
+};
 
-docker.controller('ContainerInfo', function($scope) {
+Controllers.ContainerInfo = function($scope) {
   $scope.cont = DATA;
-});
+};
 
-docker.controller('ImagesList', function($scope) {
-  $scope.TDSIZE = 12;
+Controllers.ImagesList = function($scope) {
+  $scope.TDSIZE = 16;
   $scope.images = DATA.images;
-});
+  $scope.deleteImage = function(img) {
+    $scope.images.splice($scope.images.indexOf(img), 1);
+  };
+};
 
-docker.controller('ImageInfo', function($scope) {
+Controllers.ImageInfo = function($scope) {
   $scope.image = DATA;
+};
+
+//Inject - http://docs.angularjs.org/tutorial/step_05#controller_a-note-on-minification
+angular.forEach(Controllers, function(controller, key) {
+  controller.$inject = ['$scope', '$http'];
+  docker.controller(key,controller);
 });
