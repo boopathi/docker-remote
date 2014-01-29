@@ -1,5 +1,5 @@
 <div ng-controller="ImagesList" class="ImagesList">
-  <nav class="navbar navbar-default" id="dr-static-navbar" scroll ng-class="{'navbar-fixed-top':boolNavbarScroll}">
+  <nav class="navbar navbar-default" id="dr-static-navbar" scroll ng-class="{'navbar-fixed-top container':boolNavbarScroll}">
     <div class="navbar-header">
       <a class="navbar-brand">Search</a>
     </div>
@@ -15,7 +15,7 @@
   <div class="well" ng-repeat="img in images | filter:imageQuery | orderBy:'Id'">
     <div class="row">
       <div class="col-xs-8 col-sm-10 col-md-10">
-        <h4><a href="/image/{{img.Id}}">{{img.RepoTags[img.RepoTags.length-1]}}</a></h4>
+        <h4><a href="/image/{{img.Id}}">{{img.RepoTags[0]}}</a></h4>
         <div class="small">Created on {{img.Created * 1000 | date:'medium'}} </div>
         <div class="small">ID = {{img.Id.substring(0,TDSIZE)}}</div>
       </div>
