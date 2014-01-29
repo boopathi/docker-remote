@@ -4,14 +4,14 @@ var path = require("path"),
 
 config = {
   development: {
-    debug: true,
+    debug: false,
     docker: {
       host: "172.17.42.1",
       port: "4242"
     },
     server: {
-      host: "0.0.0.0",
-      port: "4205"
+      host: process.env.IP || "0.0.0.0",
+      port: process.env.PORT || 4205
     },
     SECRET: "SOMERANDOMSECRET"
   },

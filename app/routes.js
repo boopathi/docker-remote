@@ -31,10 +31,10 @@ function error404(req, res, next) {
 }
 
 function dashboard(req, res) {
-  promises = [docker.getInfo(),
+  var promises = [docker.getInfo(),
            docker.getVersion()];
   Q.all(promises).spread(function(info, version) {
-    data = {
+    var data = {
       info: JSON.parse(info),
       version: JSON.parse(version)
     };
@@ -47,9 +47,9 @@ function dashboard(req, res) {
 }
 
 function containers(req,res) {
-  promise = docker.getContainers();
+  var promise = docker.getContainers();
   promise.then(function(data) {
-    c = JSON.parse(data);
+    var c = JSON.parse(data);
     res.render('page', {
       title: 'Containers',
       page: 'containers',
@@ -61,10 +61,10 @@ function containers(req,res) {
 }
 
 function containerinfo(req,res) {
-  cid = req.params.containerid;
-  promise = docker.getContainerInfo(cid);
+  var cid = req.params.containerid;
+  var promise = docker.getContainerInfo(cid);
   promise.then(function(data) {
-    c = JSON.parse(data);
+    var c = JSON.parse(data);
     res.render('page', {
       title: 'Container ' + cid,
       page: 'containerinfo',
@@ -74,9 +74,9 @@ function containerinfo(req,res) {
 }
 
 function images(req,res) {
-  promise = docker.getImages();
+  var promise = docker.getImages();
   promise.then(function(data) {
-    i = JSON.parse(data);
+    var i = JSON.parse(data);
     res.render('page', {
       title: 'Images',
       page: 'images',
@@ -88,10 +88,10 @@ function images(req,res) {
 }
 
 function imageinfo(req,res) {
-  iid = req.params.imageid;
-  promise = docker.getImageInfo(iid);
+  var iid = req.params.imageid;
+  var promise = docker.getImageInfo(iid);
   promise.then(function(data) {
-    i = JSON.parse(data);
+    var i = JSON.parse(data);
     res.render('page', {
       title: 'Image: ' + iid,
       page: 'imageinfo',
@@ -101,10 +101,10 @@ function imageinfo(req,res) {
 }
 
 function deleteimage(req,res) {
-  iid = req.params.imageid;
-  promise = docker.deleteImage(iid);
+  var iid = req.params.imageid;
+  var promise = docker.deleteImage(iid);
   promise.then(function(data) {
-    i = JSON.parse(data);
+    var i = JSON.parse(data);
     res.send(i);
   }, function(err) {
     res.status(500);

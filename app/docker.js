@@ -1,16 +1,10 @@
 "use strict";
 
-var models = require("./models"),
-    http = require("http"),
+var http = require("http"),
     Q = require("q"),
     _ = require("underscore"),
     config = require("../config"),
     env = process.env.NODE_ENV || "development";
-
-var options = {
-  host: config[env].docker.host,
-  port: config[env].docker.port
-};
 
 var docker = {};
 

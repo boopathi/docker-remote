@@ -25,4 +25,3 @@ module.exports = {
   Container: Container,
   Containers: Containers
 };
-

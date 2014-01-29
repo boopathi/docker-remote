@@ -1,10 +1,10 @@
 "use strict";
 
-var connect = require("express/node_modules/connect"),
+var //connect = require("express/node_modules/connect"),
     express = require("express"),
-    cookie = require("cookie"),
+    //cookie = require("cookie"),
     routes = require("./routes"),
-    socketio = require("socket.io"),
+    //socketio = require("socket.io"),
     http = require("http"),
     path = require("path"),
     store = new express.session.MemoryStore(),
@@ -42,9 +42,9 @@ app.get('/image/:imageid', routes.imageinfo);
 app.del('/image/:imageid', routes.deleteimage);
 app.get('/container/:containerid', routes.containerinfo);
 
-var server = http.createServer(app),
-    io = socketio.listen(server),
-    parseCookie = connect.utils.parseSignedCookie;
+var server = http.createServer(app);
+    //io = socketio.listen(server),
+    //parseCookie = connect.utils.parseSignedCookie;
 
 //TODO: configure io in a separate file websockets.js
 
