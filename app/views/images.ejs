@@ -1,7 +1,7 @@
 <div ng-controller="ImagesList" class="ImagesList">
-  <nav class="navbar navbar-default" id="dr-static-navbar" scroll ng-class="{'navbar-fixed-top container':boolNavbarScroll}">
+  <nav class="navbar navbar-default navbar-static-top" id="dr-static-navbar">
     <div class="navbar-header">
-      <a class="navbar-brand">Search</a>
+      <a class="navbar-brand">Search ({{(images | filter:imageQuery).length}})</a>
     </div>
     <div class="collapsible navbar-collapse">
       <form class="navbar-form navbar-left" role="search">
@@ -12,21 +12,23 @@
       </form>
     </div>
   </nav>
-  <div class="well" ng-repeat="img in images | filter:imageQuery | orderBy:'Id'">
+  <div class="bs-callout bs-callout-info" ng-repeat="img in images | filter:imageQuery | orderBy:'Id'">
     <div class="row">
-      <div class="col-xs-8 col-sm-10 col-md-10">
+      <div class="col-xs-8 col-sm-6 col-md-8">
         <h4><a href="/image/{{img.Id}}">{{img.RepoTags[0]}}</a></h4>
         <div class="small">Created on {{img.Created * 1000 | date:'medium'}} </div>
         <div class="small">ID = {{img.Id.substring(0,TDSIZE)}}</div>
+        <div class="small statusmessage"></div>
       </div>
-      <div class="col-xs-4 col-sm-2 options">
+      <div class="options dr-right">
         <form>
           <input type="hidden" name="imageid" value="{{img.Id}}"/>
-          <button class="btn btn-default" title="Start a new container with this image">
+          <button class="btn btn-default" title="Quick spawn a new container with this image">
             <span class="glyphicon" ng-class="{'glyphicon-repeat rotating':img.initloading,'glyphicon-flash':!img.initloading}"></span>
           </button>
-          <button class="btn btn-danger" ng-click="deleteImage(img)" title="Remove image">
-            <span class="glyphicon" ng-class="{'glyphicon-repeat rotating':img.rmloading,'glyphicon-remove':!img.rmloading}"></span>
+          <button ng-class="{'dr-btn-expand':img.rmmessage.length!==0}" class="btn btn-danger dr-btn" ng-click="deleteImage(img)" title="Remove image" ng-disabled="img.rmloading">
+            <span>{{img.rmmessage}}</span>
+            <span class="glyphicon" ng-show="img.rmmessage.length===0" ng-class="{'glyphicon-repeat rotating':img.rmloading,'glyphicon-remove':!img.rmloading}"></span>
           </button>
         </form>
       </div>

@@ -28,16 +28,21 @@ docker.errors = {
 };
 
 var getter = function(opts, from) {
-  var options = {
+  var options = _.extend({
     host: config[env].docker.host,
     port: config[env].docker.port
-  };
+  }, opts);
   return function() {
     var q = Q.defer();
-    var req = http.request(_.extend(options,opts), function(res) {
+    var req = http.request(options, function(res) {
       if(res.statusCode >= 200 && res.statusCode < 210) {
-        res.on('data', function(data) {
-          q.resolve(data,res);
+        // we are expecting only JSON data
+        var data = [];
+        res.on('data', function(d) {
+          data.push(JSON.parse(d));
+        });
+        res.on('end', function() {
+          q.resolve(data);
         });
       } else {
         q.reject({
@@ -46,7 +51,14 @@ var getter = function(opts, from) {
         });
       }
     });
+    req.on('socket', function(socket) {
+      socket.setTimeout(10000);
+      socket.on('timeout', function() {
+        req.abort();
+      });
+    });
     req.on('error', function(err) {
+      console.log("Error occurred");
       q.reject({
         statusCode: 500,
         desc: err,

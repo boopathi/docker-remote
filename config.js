@@ -11,7 +11,7 @@ config = {
     },
     server: {
       host: process.env.IP || "0.0.0.0",
-      port: process.env.PORT || 4205
+      port: process.env.PORT || "4205"
     },
     SECRET: "SOMERANDOMSECRET"
   },
@@ -23,7 +23,7 @@ config = {
     },
     server: {
       host: "0.0.0.0",
-      port: process.env.PORT || 4205
+      port: process.env.PORT || "4205"
     },
     SECRET: process.env.SECRET
   }

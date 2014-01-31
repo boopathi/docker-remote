@@ -11,6 +11,23 @@ docker.filter('bytes', function() {
   };
 });
 
+/*
+//Alerts Service
+docker.factory('alerts', function($rootScope) {
+  var alerts = {};
+  $rootScope.alerts = [];
+  alerts.add = function(type, msg) {
+    $rootScope.alerts.push({type: type, msg: msg});
+  };
+  alerts.close = function(index) {
+    $rootScope.alerts.splice(index,1);
+  };
+  return alerts;
+});
+*/
+
+/*
+ * Not using it now
 docker.directive('scroll', function($window) {
   return function(scope, element, attrs) {
     angular.element($window).bind('scroll', function() {
@@ -24,6 +41,7 @@ docker.directive('scroll', function($window) {
     });
   };
 });
+*/
 
 Controllers = {};
 
@@ -41,11 +59,12 @@ Controllers.ContainerInfo = function($scope) {
   $scope.cont = DATA;
 };
 
-Controllers.ImagesList = function($scope, $http) {
+Controllers.ImagesList = function($scope, $http, $timeout) {
   $scope.TDSIZE = 16;
   $scope.images = DATA.images;
   angular.forEach($scope.images, function(e) {
     e.initloading = false;
+    e.rmmessage = "";
     e.rmloading = false;
   });
   $scope.loading = false;
@@ -55,11 +74,30 @@ Controllers.ImagesList = function($scope, $http) {
       method: "DELETE",
       url: "/image/" + img.Id
     }).success(function(data) {
-      $scope.images.splice($scope.images.indexOf(img), 1); 
+      var toberemoved = $.grep($scope.images, function(gimg) {
+        for(var i=0;i<data.length;i++) {
+          var e = data[i];
+          if(typeof e.Untagged !== "undefined") {
+            if(e.Untagged === gimg.Id) {
+              gimg.RepoTags = ["<none>:<none>"];
+              continue;
+            } 
+          } else if(typeof e.Deleted !== "undefined") {
+              if(e.Deleted === gimg.Id) return true;
+          }
+        }
+        return false;
+      });
+      angular.forEach(toberemoved, function(i) {
+        $scope.images.splice($scope.images.indexOf(i),1);
+      });
       img.rmloading = false;
     }).error(function(data) {
-      console.log("error : ", data);
-      img.rmloading = false;
+      img.rmmessage = data.desc;
+      $timeout(function(){
+        img.rmmessage = "";
+        img.rmloading = false;
+      },1500);
     });
   };
 };
@@ -70,7 +108,7 @@ Controllers.ImageInfo = function($scope) {
 
 //Inject - http://docs.angularjs.org/tutorial/step_05#controller_a-note-on-minification
 angular.forEach(Controllers, function(controller, key) {
-  controller.$inject = ['$scope', '$http'];
+  controller.$inject = ['$scope', '$http', '$timeout'];
   docker.controller(key,controller);
 });
 

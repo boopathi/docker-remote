@@ -35,8 +35,8 @@ function dashboard(req, res) {
            docker.getVersion()];
   Q.all(promises).spread(function(info, version) {
     var data = {
-      info: JSON.parse(info),
-      version: JSON.parse(version)
+      info: info[0],
+      version: version[0]
     };
     res.render('page', {
       title: 'Dashboard',
@@ -49,12 +49,11 @@ function dashboard(req, res) {
 function containers(req,res) {
   var promise = docker.getContainers();
   promise.then(function(data) {
-    var c = JSON.parse(data);
     res.render('page', {
       title: 'Containers',
       page: 'containers',
       data: {
-        containers: c
+        containers: data[0]
       }
     });
   }, errorPage(res));
@@ -64,11 +63,10 @@ function containerinfo(req,res) {
   var cid = req.params.containerid;
   var promise = docker.getContainerInfo(cid);
   promise.then(function(data) {
-    var c = JSON.parse(data);
     res.render('page', {
       title: 'Container ' + cid,
       page: 'containerinfo',
-      data: c
+      data: data[0]
     });
   }, errorPage(res));
 }
@@ -76,12 +74,11 @@ function containerinfo(req,res) {
 function images(req,res) {
   var promise = docker.getImages();
   promise.then(function(data) {
-    var i = JSON.parse(data);
     res.render('page', {
       title: 'Images',
       page: 'images',
       data: {
-        images: i
+        images: data[0]
       }
     });
   }, errorPage(res));
@@ -91,11 +88,10 @@ function imageinfo(req,res) {
   var iid = req.params.imageid;
   var promise = docker.getImageInfo(iid);
   promise.then(function(data) {
-    var i = JSON.parse(data);
     res.render('page', {
       title: 'Image: ' + iid,
       page: 'imageinfo',
-      data: i
+      data: data[0]
     });
   }, errorPage(res));
 }
@@ -104,8 +100,7 @@ function deleteimage(req,res) {
   var iid = req.params.imageid;
   var promise = docker.deleteImage(iid);
   promise.then(function(data) {
-    var i = JSON.parse(data);
-    res.send(i);
+    res.send(data[0]);
   }, function(err) {
     res.status(500);
     res.send(err);
