@@ -5,7 +5,7 @@
     </div>
     <div class="collapsible navbar-collapse">
       <form class="navbar-form navbar-left" role="search">
-        <input type="text" class="form-control" ng-model="imageQuery" size="55" placeholder="ubuntu:12.04" />
+        <input type="text" class="form-control" ng-model="imageQuery" size="55" placeholder="!none" ng-init="imageQuery='!none'" />
       </form>
       <form class="navbar-form navbar-left" role="Create Image">
         <button class="btn btn-success"><span class="glyphicon glyphicon-plus"></span> Create</button>
@@ -15,20 +15,57 @@
   <div class="bs-callout bs-callout-info" ng-repeat="img in images | filter:imageQuery | orderBy:'Id'">
     <div class="row">
       <div class="col-xs-8 col-sm-6 col-md-8">
-        <h4><a href="/image/{{img.Id}}">{{img.RepoTags[0]}}</a></h4>
+        <h4>
+          <form ng-show="img.treditmode" ng-submit="tagRepo(img)">
+            <input type="text" ng-model="img.trnewtag" init-focus="img.treditmode" />
+          </form>
+          <a href="/image/{{img.Id}}" ng-show="!img.treditmode">{{img.RepoTags[0]}}</a>
+        </h4>
         <div class="small">Created on {{img.Created * 1000 | date:'medium'}} </div>
         <div class="small">ID = {{img.Id.substring(0,TDSIZE)}}</div>
         <div class="small statusmessage"></div>
       </div>
       <div class="options dr-right">
         <form>
-          <input type="hidden" name="imageid" value="{{img.Id}}"/>
-          <button class="btn btn-default" title="Quick spawn a new container with this image">
-            <span class="glyphicon" ng-class="{'glyphicon-repeat rotating':img.initloading,'glyphicon-flash':!img.initloading}"></span>
+          <button 
+            class="btn btn-default dr-btn" 
+            title="Tag a Repo to this image" 
+	    ng-class="{'dr-btn-expand':img.trmessage.length!==0}" 
+            ng-click="showTagger(img)" ng-disabled="img.trloading" 
+	    ng-disabled="img.trloading" 
+	    ng-show="img.RepoTags[0]==='<none>:<none>'" >
+            <span 
+              class="small glyphicon" 
+              ng-class="{'glyphicon-repeat rotating':img.trloading,'glyphicon-tag':!img.trloading}"
+	      ng-show="img.trmessage.length===0" >
+            </span>
+            <span>{{img.trmessage}}</span>
           </button>
-          <button ng-class="{'dr-btn-expand':img.rmmessage.length!==0}" class="btn btn-danger dr-btn" ng-click="deleteImage(img)" title="Remove image" ng-disabled="img.rmloading">
+          <button 
+            class="btn btn-default dr-btn" 
+	    title="Quick spawn a new container with this image" 
+            ng-class="{'dr-btn-expand':img.qsmessage.length!==0}" 
+            ng-click="quickSpawn(img)" 
+            ng-disabled="img.qsloading" > 
+            <span 
+              class="glyphicon" 
+              ng-class="{'glyphicon-repeat rotating':img.qsloading,'glyphicon-flash':!img.qsloading}" 
+              ng-show="img.qsmessage.length===0" >
+            </span>
+            <span>{{img.qsmessage}}</span>
+          </button>
+          <button 
+            class="btn btn-danger dr-btn" 
+            title="Remove image" 
+            ng-class="{'dr-btn-expand':img.rmmessage.length!==0}" 
+            ng-click="deleteImage(img)" 
+            ng-disabled="img.rmloading" >
+            <span 
+              class="glyphicon" 
+              ng-class="{'glyphicon-repeat rotating':img.rmloading,'glyphicon-remove':!img.rmloading}" 
+              ng-show="img.rmmessage.length===0" >
+            </span>
             <span>{{img.rmmessage}}</span>
-            <span class="glyphicon" ng-show="img.rmmessage.length===0" ng-class="{'glyphicon-repeat rotating':img.rmloading,'glyphicon-remove':!img.rmloading}"></span>
           </button>
         </form>
       </div>

@@ -4,7 +4,7 @@ var Q = require("q"),
 
 var errorPage = function(res) {
   return function(err) {
-    res.status(500);
+    res.status(err.statusCode);
     res.render('page', {
       title: 'Error!',
       page: '500',
@@ -96,6 +96,33 @@ function imageinfo(req,res) {
   }, errorPage(res));
 }
 
+
+function tagrepo(req, res) {
+  var iid = req.params.imageid;
+  var repo = req.body.repo;
+  var promise = docker.tagRepo(iid,repo);
+  promise.then(function(data) {
+    res.status(200);
+    res.send("");
+  }, function(err) {
+    res.status(err.statusCode);
+    res.send("");
+  });
+}
+
+//Will act as a proxy
+function quickspawncontainer(req, res) {
+  var iid = req.params.imageid;
+  var promise = docker.quickSpawnContainer(iid);
+  promise.then(function(data) {
+    res.send(data[0]);
+  }, function(err) {
+    res.status(500);
+    res.send(err);
+  });
+}
+
+//Will act as a proxy
 function deleteimage(req,res) {
   var iid = req.params.imageid;
   var promise = docker.deleteImage(iid);
@@ -113,6 +140,8 @@ module.exports = {
   images: images,
   containerinfo: containerinfo,
   imageinfo: imageinfo,
+  tagrepo: tagrepo,
+  quickspawncontainer: quickspawncontainer,
   deleteimage: deleteimage,
   error404: error404
 };

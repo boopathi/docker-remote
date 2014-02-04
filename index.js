@@ -2,7 +2,7 @@
 var config = require("./config"),
     env = process.env.NODE_ENV || "development",
     ip = config[env].server.host,
-    port = config[env].server.port,
+    port = parseInt(config[env].server.port),
     profiler, profile_file;
 
 if(config[env].debug) {

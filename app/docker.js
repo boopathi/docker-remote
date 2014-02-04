@@ -13,6 +13,12 @@ docker.errors = {
     "404": "Image Not Found",
     "500": "Internal Server Error"
   },
+  imagetagrepo: {
+    "400": "Bad Parameter",
+    "404": "No such image",
+    "409": "Conflict",
+    "500": "Internal Server Error"
+  },
   deleteimage: {
     "404": "No such Image",
     "409": "Conflict",
@@ -22,12 +28,18 @@ docker.errors = {
     "404": "Container Not Found",
     "500": "Internal Server Error"
   },
+  containercreate: {
+    "404": "No such container",
+    "406": "Impossible to attach",
+    "500": "Internal Server Error"
+  },
   all: {
     "500": "Internal Server Error"
   }
 };
 
 var getter = function(opts, from) {
+  if(typeof opts.data === "undefined") opts.data = "";
   var options = _.extend({
     host: config[env].docker.host,
     port: config[env].docker.port
@@ -47,7 +59,7 @@ var getter = function(opts, from) {
       } else {
         q.reject({
           statusCode: res.statusCode,
-          desc: docker.errors[from][res.statusCode.toString()]
+          desc: docker.errors[from.toString()][res.statusCode.toString()]
         });
       }
     });
@@ -64,6 +76,7 @@ var getter = function(opts, from) {
         desc: err,
       });
     });
+    req.write(opts.data + "\n");
     req.end();
     return q.promise;
   };
@@ -81,7 +94,7 @@ docker.getVersion = getter({
 
 //Container related stuff
 docker.getContainers = getter({
-  path: "/containers/json",
+  path: "/containers/json?all=1&size=1",
   method: "GET"
 }, "containers");
 
@@ -94,7 +107,7 @@ docker.getContainerInfo = function(cont) {
 
 //Images related stuff
 docker.getImages = getter({
-  path: "/images/json",
+  path: "/images/json?all=1",
   method: "GET"
 }, "images");
 
@@ -103,6 +116,23 @@ docker.getImageInfo = function(img) {
     path: "/images/" + img + "/json",
     method: "GET"
   }, "imageinfo")();
+};
+
+docker.tagRepo = function(img, tag) {
+  return getter({
+    path: "/images/" + img + "/tag?repo=" + tag,
+    method: "POST"
+  }, "imagetagrepo")();
+};
+
+docker.quickSpawnContainer = function(img) {
+  return getter({
+    path: "/containers/create",
+    method: "POST",
+    data: JSON.stringify({
+      "Image": img
+    })
+  }, "containercreate")();
 };
 
 docker.deleteImage = function(img) {

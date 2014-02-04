@@ -15,7 +15,8 @@ gruntConfig.push({
     },
     dev: {
       options: {
-        script: "index.js"
+        script: "index.js",
+        port: 4205,
       }
     },
     prod: {

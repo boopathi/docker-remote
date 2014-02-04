@@ -11,6 +11,22 @@ docker.filter('bytes', function() {
   };
 });
 
+//Directive to initialize focus on appear
+docker.directive('initFocus', function() {
+  var timer;
+  return {
+    restrict: 'A',
+    link: function(scope, elm, attr) {
+      scope.$watch(attr.initFocus, function() {
+        if(timer) clearTimeout(timer);
+        timer = setTimeout(function() {
+          elm.focus();
+        },0);
+      });
+    }
+  };
+});
+
 /*
 //Alerts Service
 docker.factory('alerts', function($rootScope) {
@@ -62,12 +78,65 @@ Controllers.ContainerInfo = function($scope) {
 Controllers.ImagesList = function($scope, $http, $timeout) {
   $scope.TDSIZE = 16;
   $scope.images = DATA.images;
+  //some initializations
   angular.forEach($scope.images, function(e) {
-    e.initloading = false;
+    //tagrepo
+    e.trmessage = "";
+    e.treditmode = false;
+    e.trloading = false;
+    //quick spawn container
+    e.qsmessage = "";
+    e.qsloading = false;
+    //remove image
     e.rmmessage = "";
     e.rmloading = false;
   });
-  $scope.loading = false;
+
+  //Tag Image handler
+  $scope.showTagger = function(img) {
+    img.treditmode = true;
+  };
+  
+  $scope.tagRepo = function(img, repo) {
+    img.treditmode = false;
+    img.trloading = true; //just in case
+    $http({
+      method: "POST",
+      url: "/image/" + img.Id + "/tag",
+      data: {
+        repo: img.trnewtag
+      }
+    }).success(function(data,status){
+      img.trloading = false;
+      img.RepoTags = [img.trnewtag];
+    }).error(function(data,status) {
+      img.trmessage = "Failed: " + status;
+      $timeout(function() {
+        img.trmessage = "";
+        img.trloading = false;
+      }, 1500);
+    });
+  };
+
+  //Quick spawn handler
+  $scope.quickSpawn = function(img) {
+    img.qsloading = true;
+    $http({
+      method: "POST",
+      url: "/image/" + img.Id + "/quickspawn"
+    }).success(function(data) {
+      img.qsmessage = data.Id;
+      img.qsloading = false;
+    }).error(function(data) {
+      img.qsmessage = "Failed";
+      $timeout(function() {
+        img.qsmessage = "";
+        img.qsloading = false;
+      }, 1500);
+    });
+  };
+
+  //Remove image handler
   $scope.deleteImage = function(img) {
     img.rmloading = true;
     $http({
@@ -93,7 +162,11 @@ Controllers.ImagesList = function($scope, $http, $timeout) {
       });
       img.rmloading = false;
     }).error(function(data) {
-      img.rmmessage = data.desc;
+      switch(data.statusCode) {
+        case 409: img.rmmessage = "Conflict"; break;
+        case 500: img.rmmessage = "Unreachable"; break;
+        default: img.rmmessage = "Error " + data.statusCode;
+      }
       $timeout(function(){
         img.rmmessage = "";
         img.rmloading = false;

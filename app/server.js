@@ -14,7 +14,7 @@ var app = express();
 
 var env = app.get('env');
 
-app.set('port', config[env].server.port);
+app.set('port', parseInt(config[env].server.port));
 app.set('ip', config[env].server.host);
 app.set('views', path.join(__dirname, "views"));
 app.set("view engine", "ejs");
@@ -39,6 +39,8 @@ app.get('/', routes.dashboard);
 app.get('/images', routes.images);
 app.get('/containers', routes.containers);
 app.get('/image/:imageid', routes.imageinfo);
+app.post('/image/:imageid/tag', routes.tagrepo);
+app.post('/image/:imageid/quickspawn', routes.quickspawncontainer);
 app.del('/image/:imageid', routes.deleteimage);
 app.get('/container/:containerid', routes.containerinfo);
 

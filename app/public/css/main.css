@@ -47,13 +47,16 @@
 }
 
 .dr-btn {
-  -webkit-transition: width 0.2s ease-in-out;
-  transition: width 0.2s ease-in-out;
+  -o-transition: width 0.15s ease-in-out;
+  -moz-transition: width 0.15s ease-in-out;
+  -webkit-transition: width 0.15s ease-in-out;
+  transition: width 0.15s ease-in-out;
   width: 2.8em;
+  max-width: 10em;
 }
 
 .dr-btn-expand {
-  width: 7.5em;
+  width: 8em;
 }
 
 .bs-callout {
