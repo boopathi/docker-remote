@@ -85,7 +85,13 @@ gruntConfig.push({
       src: ['assets/jquery/jquery.js',
             'assets/angular/angular.js',
             'assets/bootstrap/dist/js/bootstrap.js',
-            'app/public/js/controllers.js'],
+            'app/public/js/app.js',
+            'app/public/js/dashboard.controller.js',
+            'app/public/js/imageslist.controller.js',
+            'app/public/js/imageinfo.controller.js',
+            'app/public/js/containerslist.controller.js',
+            'app/public/js/containerinfo.controller.js',
+            'app/public/js/kickstart.js'],
       dest: 'app/public/build/js/docker-remote.js'
     }
   }
