@@ -4,7 +4,7 @@
   "description": "A web app to control your dockerio containers",
   "scripts": {
     "start": "node index.js",
-    "postinstall": "grunt build",
+    "postinstall": "bower install && grunt build",
     "test": "mocha"
   },
   "dependencies": {
