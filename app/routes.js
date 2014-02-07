@@ -47,15 +47,25 @@ function dashboard(req, res) {
 }
 
 function containers(req,res) {
-  var promise = docker.getContainers();
+  var promise;
+  if(typeof req.query.all !== "undefined" && ["true","1"].indexOf(req.query.all.toString().toLowerCase()) !== -1)
+    promise = docker.getAllContainers();
+  else
+    promise = docker.getContainers();
   promise.then(function(data) {
-    res.render('page', {
-      title: 'Containers',
-      page: 'containers',
-      data: {
-        containers: data[0]
-      }
-    });
+    if(req.accepts('html')) {
+      res.render('page', {
+        title: 'Containers',
+        page: 'containers',
+        data: {
+          containers: data[0]
+        }
+      });
+    } else if(req.accepts('json')) {
+      res.send(data[0]);
+    } else {
+      res.send(data[0]);
+    }
   }, errorPage(res));
 }
 

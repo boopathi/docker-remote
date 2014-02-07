@@ -48,8 +48,11 @@ Controllers.ImagesList = function($scope, $http, $timeout) {
       method: "POST",
       url: "/image/" + img.Id + "/quickspawn"
     }).success(function(data) {
-      img.qsmessage = data.Id;
-      img.qsloading = false;
+      img.qsmessage = data.Id.substring(0,11);
+      $timeout(function() {
+        img.qsmessage = "";
+        img.qsloading = false;
+      }, 1500);
     }).error(function(data) {
       img.qsmessage = "Failed";
       $timeout(function() {

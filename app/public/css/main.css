@@ -42,6 +42,13 @@
   margin-top: 40px;
 }
 
+.dr-container-stopped {
+  color: #d2322d;
+}
+.dr-container-running {
+  color: #47a447;
+}
+
 .dr-navbar-top {
   margin-top: 20px;
 }
@@ -96,16 +103,17 @@
   color: #34789a;
 }
 
-.ImagesList {
-}
-
 @-webkit-keyframes rotating {
-    from{
-        -webkit-transform: rotate(0deg);
-    }
-    to{
-        -webkit-transform: rotate(360deg);
-    }
+  from{ -webkit-transform: rotate(0deg); }
+  to{ -webkit-transform: rotate(360deg); }
+}
+@-moz-keyframes rotating {
+  from { -moz-transform: rotate(0deg); }
+  to { -moz-transform: rotate(360deg); }
+}
+@-o-keyframes rotating {
+  from { -o-transform: rotate(0deg); }
+  to { -o-transform: rotate(360deg); }
 }
 
 .rotating {

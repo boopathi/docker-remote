@@ -49,11 +49,12 @@ var getter = function(opts, from) {
     var req = http.request(options, function(res) {
       if(res.statusCode >= 200 && res.statusCode < 210) {
         // we are expecting only JSON data
-        var data = [];
+        var data = [], raw_data = "";
         res.on('data', function(d) {
-          data.push(JSON.parse(d));
+          raw_data = raw_data + d;
         });
         res.on('end', function() {
+          data = [JSON.parse((raw_data))];
           q.resolve(data);
         });
       } else {
@@ -94,7 +95,12 @@ docker.getVersion = getter({
 
 //Container related stuff
 docker.getContainers = getter({
-  path: "/containers/json?all=1&size=1",
+  path: "/containers/json?all=0&size=1",
+  method: "GET"
+}, "containers");
+
+docker.getAllContainers = getter({
+  path: "/containers/json?all=1&size=0",
   method: "GET"
 }, "containers");
 
@@ -107,6 +113,11 @@ docker.getContainerInfo = function(cont) {
 
 //Images related stuff
 docker.getImages = getter({
+  path: "/images/json?all=0",
+  method: "GET"
+}, "images");
+
+docker.getAllImages = getter({
   path: "/images/json?all=1",
   method: "GET"
 }, "images");

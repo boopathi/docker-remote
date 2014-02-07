@@ -1,21 +1,51 @@
-<table ng-controller="ContainersList" class="table table-hover table-condensed">
-  <thead>
-    <tr>
-      <th>Container Id</th>
-      <th>Image</th>
-      <th>Command</th>
-      <th>Created Timestamp</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr ng-repeat="cont in containers">
-      <td><a href="/container/{{cont.Id}}">{{cont.Id.substring(0,14)}}</a></td>
-      <td><a href="/image/{{cont.Image}}">{{cont.Image}}</td>
-      <td>{{cont.Command}}</td>
-      <td>{{cont.Created * 1000| date:'medium'}}</td>
-    </tr>
-  </tbody>
-</table>
+<div ng-controller="ContainersList">
+  <nav class="navbar navbar-default navbar-static-top">
+    <div class="navbar-header">
+      <a class="navbar-brand">Search ({{(containers | filter:containerQuery).length}})</a>
+    </div>
+    <div class="collapsible navbar-collapse">
+      <form class="navbar-form navbar-left" role="Search">
+        <input type="text" class="form-control" ng-model="containerQuery" size="55" placeholder="busybox:latest" />
+      </form>
+      <ul class="nav navbar-nav">
+        <li><a href="/containers?all=1">Show all containers</a></li>
+      </ul>
+    </div>
+  </nav>
+  <table class="table table-hover table-condensed">
+    <thead>
+      <tr>
+        <th>Status</th>
+        <th>Container Id</th>
+        <th>Image</th>
+        <th>Command</th>
+        <th>Created</th>
+        <th>SizeRw</th>
+        <th>SizeRootFs</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="cont in containers | filter: containerQuery">
+        <td><status-icon></status-icon></td>
+        <td><a href="/container/{{cont.Id}}">{{cont.Id.substring(0,12)}}</a></td>
+        <td>{{cont.Image}}</td>
+        <td title="{{cont.Command}}">{{cont.Command | shortShellCommand}}</td>
+        <td>{{cont.Created * 1000| date:'medium'}}</td>
+        <td>{{cont.SizeRw | bytes}}</td>
+        <td>{{cont.SizeRootFs | bytes}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<script type="html/template" id="container-state">
+<center>
+  <span 
+    class="glyphicon" 
+    title="{{cont.Status}}" 
+    ng-class="{'glyphicon-cog dr-container-running rotating': cont.IsRunning, 'glyphicon-off dr-container-stopped':!cont.IsRunning}">
+  </span>
+</center>
+</script>
 <script>
 var DATA=<%- JSON.stringify(data) %>;
 </script>

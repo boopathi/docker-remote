@@ -11,6 +11,48 @@ docker.filter('bytes', function() {
   };
 });
 
+docker.directive('statusIcon', function() {
+  return {
+    restrict: 'E',
+    template: $("#container-state").html(),
+    link: function(scope, elm, attr) {
+      var s = scope.cont.Status.split(/ /);
+      if(s[0] === "Exit") {
+        scope.cont.IsRunning = false;
+      } else if(s[0] === "Up") {
+        scope.cont.IsRunning = true;
+      } else {
+        console.log("Unresolved case");
+        scope.cont.IsRunning = false;
+      }
+    },
+  };
+});
+
+docker.filter('shortShellCommand', function() {
+  return function(command, maxlen) {
+    if(typeof maxlen === "undefined") maxlen = 20;
+    var cmdarr = command.split(/ /);
+    if(cmdarr[0] === "/bin/sh") cmdarr.splice(0,1);
+    for(var i=0;i<cmdarr.length;i++) {
+      if(cmdarr[i][0] !== '-') break;
+      cmdarr[i] = ''; //because splice changes the length of the array
+    }
+    return cmdarr.join(' ').substring(0,maxlen);
+  };
+});
+
+/*
+docker.filter('containerStatus', function() {
+  return function(statusString) {
+    var str = statusString.split();
+    if(str[0].toLowerCase() === 'Exit'.toLowerCase())
+      return "hi";
+    return "<b>asdfasDF</b>";
+  };
+});
+*/
+
 //Directive to initialize focus on appear
 docker.directive('initFocus', function() {
   var timer;

@@ -5,7 +5,7 @@
     </div>
     <div class="collapsible navbar-collapse">
       <form class="navbar-form navbar-left" role="search">
-        <input type="text" class="form-control" ng-model="imageQuery" size="55" placeholder="!none" ng-init="imageQuery='!none'" />
+        <input type="text" class="form-control" ng-model="imageQuery" size="55" placeholder="!none" />
       </form>
       <form class="navbar-form navbar-left" role="Create Image">
         <button class="btn btn-success"><span class="glyphicon glyphicon-plus"></span> Create</button>
@@ -30,20 +30,20 @@
           <button 
             class="btn btn-default dr-btn" 
             title="Tag a Repo to this image" 
-	    ng-class="{'dr-btn-expand':img.trmessage.length!==0}" 
+	          ng-class="{'dr-btn-expand':img.trmessage.length!==0}" 
             ng-click="showTagger(img)" ng-disabled="img.trloading" 
-	    ng-disabled="img.trloading" 
-	    ng-show="img.RepoTags[0]==='<none>:<none>'" >
+	          ng-disabled="img.trloading" 
+	          ng-show="img.RepoTags[0]==='<none>:<none>'" >
             <span 
               class="small glyphicon" 
               ng-class="{'glyphicon-repeat rotating':img.trloading,'glyphicon-tag':!img.trloading}"
-	      ng-show="img.trmessage.length===0" >
+	            ng-show="img.trmessage.length===0" >
             </span>
             <span>{{img.trmessage}}</span>
           </button>
           <button 
             class="btn btn-default dr-btn" 
-	    title="Quick spawn a new container with this image" 
+	          title="Quick spawn a new container with this image" 
             ng-class="{'dr-btn-expand':img.qsmessage.length!==0}" 
             ng-click="quickSpawn(img)" 
             ng-disabled="img.qsloading" > 
