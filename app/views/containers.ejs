@@ -20,31 +20,54 @@
         <th>Image</th>
         <th>Command</th>
         <th>Created</th>
-        <th>SizeRw</th>
-        <th>SizeRootFs</th>
+        <th>Actions</th>
       </tr>
     </thead>
     <tbody>
       <tr ng-repeat="cont in containers | filter: containerQuery">
         <td><status-icon></status-icon></td>
-        <td><a href="/container/{{cont.Id}}">{{cont.Id.substring(0,12)}}</a></td>
+        <td title="SizeRw = {{cont.SizeRw}}; SizeRootFs = {{cont.SizeRootFs}}"><a href="/container/{{cont.Id}}">{{cont.Id.substring(0,12)}}</a></td>
         <td>{{cont.Image}}</td>
         <td title="{{cont.Command}}">{{cont.Command | shortShellCommand}}</td>
         <td>{{cont.Created * 1000| date:'medium'}}</td>
-        <td>{{cont.SizeRw | bytes}}</td>
-        <td>{{cont.SizeRootFs | bytes}}</td>
+        <td align="right">
+          <form>
+            <button 
+              class="btn btn-xs btn-warning" 
+              title="Restart"
+              ng-show="cont.IsRunning">
+              <span class="glyphicon glyphicon-repeat"></span>
+            </button>
+            <button 
+              class="btn btn-xs btn-warning" 
+              title="Kill"
+              ng-show="cont.IsRunning">
+              <span class="glyphicon glyphicon-remove"></span>
+            </button>
+            <button 
+              class="btn btn-xs btn-primary" 
+              title="Export">
+              <span class="glyphicon glyphicon-export"></span>
+            </button>
+            <button 
+              class="btn btn-xs btn-danger" 
+              title="Remove">
+              <span class="glyphicon glyphicon-remove"></span>
+            </button>
+          </form>
+        </td>
       </tr>
     </tbody>
   </table>
 </div>
 <script type="html/template" id="container-state">
-<center>
+<center><button class="btn btn-default btn-xs">
   <span 
     class="glyphicon" 
-    title="{{cont.Status}}" 
+    title="{{cont.Status}}; Click to {{cont.IsRunning && 'Stop' || 'Start'}}" 
     ng-class="{'glyphicon-cog dr-container-running rotating': cont.IsRunning, 'glyphicon-off dr-container-stopped':!cont.IsRunning}">
   </span>
-</center>
+</button></center>
 </script>
 <script>
 var DATA=<%- JSON.stringify(data) %>;
